@@ -4,38 +4,47 @@ const svgson = require('svgson');
 const jsdom = require("jsdom").jsdom;
 
 
-module.exports = function(){
+module.exports = function(parsedData){
 
-fs.readFile(`${__dirname}/public/uploads/paris_test.svg`, 'utf-8',
+/*fs.readFile(`${__dirname}/public/uploads/${fileName}`, 'utf-8',
     function(err, data) {
         svgson(data, {svgo: true},
 
     function(result) {
-        let tower = result.childs[3].attrs.d;
-        let towerColor = result.childs[3].attrs.fill;
+        let tower = result.childs[1].attrs.d;
+        let towerColor = result.childs[1].attrs.fill;
 
         generateSvg(tower, towerColor);
 
-/*        let arr =[];
+      /!*  let arr =[];
         result.childs.forEach((item, i) => {
+            if(item[i].attrs.d == undefined) {i++}
             arr.push(item[i].attrs.d);
         });
-        console.log(arr);*/
+        console.log(arr);*!/
 
     });
-});
+});*/
 
-function generateSvg(d, fill){
 let body = d3.select(jsdom("<html><body></body></html>").documentElement).select("body");
 
-    body.append("svg")
-        .attr("version", 1.1)
-        .attr("xmlns", 'http://www.w3.org/2000/svg')
-        .attr("viewBox", `0 0 1190.6 1683.8`)
-        .append("path")
-        .attr('d', d)
-        .style("fill", fill);
+    parsedData.forEach(function(elem){
+/*        body.append("svg")
+            .attr("version", 1.1)
+            .attr("xmlns", 'http://www.w3.org/2000/svg')
+            .attr("viewBox", `0 0 1190.6 1683.8`)
+            .append("g")
+            .data(elem.code)
+        */
 
-   fs.writeFileSync(`${__dirname}/public/decomposed/tower.svg`, `<?xml version=\"1.0\"?>${body.node().innerHTML}`);
- }
+        fs.writeFileSync(`${__dirname}/public/decomposed/${elem.id}.svg`,
+            `<?xml version=\"1.0\"?>
+               <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1190.6 1683.8" style="background: black">
+               ${elem.code}
+            </svg>`);
+    });
+
+
+
+
 };

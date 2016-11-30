@@ -4,6 +4,7 @@ const multer  = require('multer');
 const fs = require('fs');
 
 let decompose = require('./decompose');
+let parseSvg = require('./parse-svg');
 
 app.get('/', function(req, res){
   res.sendFile(`${__dirname}/public/index.html`)
@@ -26,10 +27,10 @@ let upload = multer({ storage: storage}).single('svg');
 app.post('/', (req, res) => {
   upload(req, res, (err) => {
     if(err) return res.end("Error uploading file");
-    if(req.file == undefined) return res.end("First, select SVG file");
-    res.end(`File ${req.file.filename} is succsecfully uploaded.`);
+    if(req.file == undefined || req.file.mimetype !== 'image/svg+xml') return res.end("Select only SVG file");
 
-    decompose();
+      parseSvg(req.file.filename);
+      res.end(`File ${req.file.filename} is succsecfully uploaded.`);
   });
 });
 

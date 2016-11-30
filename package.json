@@ -1,6 +1,6 @@
 {
   "name": "svg_decomposer",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "SVG Decomposer",
   "main": "app.js",
   "scripts": {
@@ -13,6 +13,7 @@
     "express": "^4.14.0",
     "jsdom": "^9.8.3",
     "multer": "^1.2.0",
+    "phantom": "^3.2.0",
     "svgson": "^2.0.3"
   }
 }
